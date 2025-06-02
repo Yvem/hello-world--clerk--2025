@@ -19,6 +19,8 @@ export default {
 		const cookies = request.headers.get("Cookie") || ""
 
 		const clerkClient = createClerkClient({
+			secretKey: 'xxx',
+			publishableKey: 'xxx',
 		})
 
 		const { isSignedIn } = await clerkClient.authenticateRequest(request, {
