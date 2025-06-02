@@ -23,13 +23,19 @@ export default {
 			publishableKey: 'xxx',
 		})
 
-		const { isSignedIn } = await clerkClient.authenticateRequest(request, {
+		const state = await clerkClient.authenticateRequest(request, {
 			//jwtKey: 'CLERK_JWT_KEY',
 			//authorizedParties: ['https://example.com'],
 		})
 
+		const auth = state.toAuth()
+		if (state.isSignedIn) {
+
+		}
+		//debugger
+
 		// Add logic to perform protected actions
 
-		return new Response(`Hello from the worker! ${isSignedIn}`);
+		return new Response(`Hello from the worker! ${state.isSignedIn ? `${auth.sessionClaims.email} ${auth.sessionClaims.username}` : `not signed in`}`);
 	},
 } satisfies ExportedHandler<Env>;
