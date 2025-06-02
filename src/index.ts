@@ -11,8 +11,23 @@
  * Learn more at https://developers.cloudflare.com/workers/
  */
 
+// https://clerk.com/docs/backend-requests/manual-jwt
+import { createClerkClient } from '@clerk/backend'
+
 export default {
 	async fetch(request, env, ctx): Promise<Response> {
-		return new Response('Hello World (updated)!');
+		const cookies = request.headers.get("Cookie") || ""
+
+		const clerkClient = createClerkClient({
+		})
+
+		const { isSignedIn } = await clerkClient.authenticateRequest(request, {
+			//jwtKey: 'CLERK_JWT_KEY',
+			//authorizedParties: ['https://example.com'],
+		})
+
+		// Add logic to perform protected actions
+
+		return new Response(`Hello from the worker! ${isSignedIn}`);
 	},
 } satisfies ExportedHandler<Env>;
